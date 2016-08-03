@@ -65,6 +65,7 @@ def webook():
                     if message_text.lower() == 'hi' or message_text.lower() == 'hey' or message_text.lower() == 'hello' or message_text.lower() == 'yo':
                         send_message(sender_id, "Hello there")
                     elif message_text.lower() == 'quote': 
+                        popular_choice = ['motivational', 'life', 'positive', 'friendship', 'success', 'happiness', 'love']
                         url = "http://www.brainyquote.com/quotes/topics/topic_" + popular_choice[random.randint(0, len(popular_choice) - 1)] + ".html"
                         response = requests.get(url)
                         soup = BeautifulSoup(response.text, "html.parser")
