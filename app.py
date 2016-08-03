@@ -33,7 +33,7 @@ def get_quotes(type, number_of_quotes=1):
     for quote in soup.find_all('a', {'title': 'view quote'}):
         quotes.append(quote.contents[0])
     random.shuffle(quotes)
-   result = quotes[:number_of_quotes]
+    result = quotes[:number_of_quotes]
     return result
 
 
