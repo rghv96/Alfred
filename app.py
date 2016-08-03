@@ -25,7 +25,7 @@ def verify():
 
 
 @app.route('/', methods=['POST'])
-def get_quotes(type, number_of_quotes=1):
+def get_quotes(type):
     url = "http://www.brainyquote.com/quotes/topics/topic_" + type + ".html"
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
@@ -33,7 +33,7 @@ def get_quotes(type, number_of_quotes=1):
     for quote in soup.find_all('a', {'title': 'view quote'}):
         quotes.append(quote.contents[0])
     random.shuffle(quotes)
-    result = quotes[:number_of_quotes]
+    result = quotes[:1]
     return result
 
 
