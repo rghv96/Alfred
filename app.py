@@ -46,7 +46,8 @@ def webook():
                     if message_text.lower() == 'hi' or message_text.lower() == 'hey' or message_text.lower() == 'hello' or message_text.lower() == 'yo':
                         send_message(sender_id, "Hello there")
                     elif message_text.lower() == 'quote':    
-                        send_message(sender_id, str(pybrainyquote.get_random_quote()))
+                        send_message(sender_id, "type <quote>")
+                        #send_message(sender_id, str(pybrainyquote.get_random_quote()))
                     else :
                         send_message(sender_id, "type <quote>")
 
