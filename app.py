@@ -25,6 +25,23 @@ def verify():
 
 
 @app.route('/', methods=['POST'])
+def get_quotes(type, number_of_quotes=1):
+    url = "http://www.brainyquote.com/quotes/topics/topic_" + type + ".html"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+    quotes = []
+    for quote in soup.find_all('a', {'title': 'view quote'}):
+        quotes.append(quote.contents[0])
+    random.shuffle(quotes)
+   result = quotes[:number_of_quotes]
+    return result
+
+
+def get_random_quote():
+    popular_choice = ['motivational', 'life', 'positive', 'friendship', 'success', 'happiness', 'love']
+    result = get_quotes(popular_choice[random.randint(0, len(popular_choice) - 1)])
+    return result
+
 def webook():
 
     # endpoint for processing incoming messaging events
@@ -43,21 +60,21 @@ def webook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
 
-                    popular_choice = ['motivational', 'life', 'positive', 'friendship', 'success', 'happiness', 'love']
+                    
 
                     if message_text.lower() == 'hi' or message_text.lower() == 'hey' or message_text.lower() == 'hello' or message_text.lower() == 'yo':
                         send_message(sender_id, "Hello there")
                     elif message_text.lower() == 'quote': 
-                        url = "http://www.brainyquote.com/quotes/topics/topic_" + popular_choice[random.randint(0, len(popular_choice) - 1)] + ".html"
-                        response = requests.get(url)
-                        soup = BeautifulSoup(response.text, "html.parser")
-                        quotes = []
-                        for quote in soup.find_all('a', {'title': 'view quote'}):
-                            quotes.append(quote.contents[0])
-                        random.shuffle(quotes)
-                        result = quotes[:1]   
-                        send_message(sender_id, str(result))
-                        #send_message(sender_id, str(pybrainyquote.get_random_quote()))
+                        #url = "http://www.brainyquote.com/quotes/topics/topic_" + popular_choice[random.randint(0, len(popular_choice) - 1)] + ".html"
+                        #response = requests.get(url)
+                        #soup = BeautifulSoup(response.text, "html.parser")
+                        #quotes = []
+                        #for quote in soup.find_all('a', {'title': 'view quote'}):
+                        #    quotes.append(quote.contents[0])
+                        #random.shuffle(quotes)
+                        #result = quotes[:1]   
+                        #send_message(sender_id, str(result))
+                        send_message(sender_id, str(pybrainyquote.get_random_quote()))
 
                     else :
                         send_message(sender_id, "type <quote> to get a random quote :D")
@@ -76,21 +93,7 @@ def webook():
 #popular_choice = ['motivational', 'life', 'positive', 'friendship', 'success', 'happiness', 'love']
 
 
-#def get_quotes(type, number_of_quotes=1):
-#    url = "http://www.brainyquote.com/quotes/topics/topic_" + type + ".html"
-#    response = requests.get(url)
-#    soup = BeautifulSoup(response.text, "html.parser")
-#    quotes = []
-#    for quote in soup.find_all('a', {'title': 'view quote'}):
-#        quotes.append(quote.contents[0])
-#    random.shuffle(quotes)
-#   result = quotes[:number_of_quotes]
-#    return result
 
-
-#def get_random_quote():
-#    result = get_quotes(popular_choice[random.randint(0, len(popular_choice) - 1)])
-#    return result
 
 def send_message(recipient_id, message_text):
 
