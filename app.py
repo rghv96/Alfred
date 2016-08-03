@@ -56,7 +56,7 @@ def webook():
                             quotes.append(quote.contents[0])
                         random.shuffle(quotes)
                         result = quotes[:1]   
-                        send_message(sender_id, result)
+                        send_message(sender_id, str(result))
                         #send_message(sender_id, str(pybrainyquote.get_random_quote()))
 
                     else :
