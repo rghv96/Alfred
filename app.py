@@ -39,8 +39,8 @@ def webook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
 
-                    if message_text.lower() == 'hi' :
-                        send_message(sender_id, "Hello")
+                    if message_text.lower() == 'hi' or message_text.lower() == 'hey' or message_text.lower() == 'hello' or message_text.lower() == 'yo':
+                        send_message(sender_id, "Hello there")
                     else:    
                         send_message(sender_id, "got it, thanks!")
 
