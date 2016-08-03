@@ -5,6 +5,10 @@ import json
 import requests
 from flask import Flask, request
 
+from bs4 import BeautifulSoup
+import requests
+import random
+
 app = Flask(__name__)
 
 
@@ -41,8 +45,10 @@ def webook():
 
                     if message_text.lower() == 'hi' or message_text.lower() == 'hey' or message_text.lower() == 'hello' or message_text.lower() == 'yo':
                         send_message(sender_id, "Hello there")
-                    else:    
-                        send_message(sender_id, "got it, thanks!")
+                    elif message_text.lower() == 'quote':    
+                        send_message(sender_id, str(pybrainyquote.get_random_quote()))
+                    else :
+                        send_message(sender_id, "type <quote>")
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -55,6 +61,24 @@ def webook():
 
     return "ok", 200
 
+popular_choice = ['motivational', 'life', 'positive', 'friendship', 'success', 'happiness', 'love']
+
+
+def get_quotes(type, number_of_quotes=1):
+    url = "http://www.brainyquote.com/quotes/topics/topic_" + type + ".html"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+    quotes = []
+    for quote in soup.find_all('a', {'title': 'view quote'}):
+        quotes.append(quote.contents[0])
+    random.shuffle(quotes)
+    result = quotes[:number_of_quotes]
+    return result
+
+
+def get_random_quote():
+    result = get_quotes(popular_choice[random.randint(0, len(popular_choice) - 1)])
+    return result
 
 def send_message(recipient_id, message_text):
 
