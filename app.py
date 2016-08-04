@@ -69,7 +69,7 @@ def webook():
 
                     
                     nameRegex = re.compile(r'quote (.*)')
-                    mo = nameRegex.search(message_text)
+                    mo = nameRegex.search(message_text.lower())
 
                     if message_text.lower() == 'hi' or message_text.lower() == 'hey' or message_text.lower() == 'hello' or message_text.lower() == 'yo':
                         send_message(sender_id, "Hello there")
