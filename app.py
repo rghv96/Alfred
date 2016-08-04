@@ -16,7 +16,10 @@ app = Flask(__name__)
 popular_choice = ['motivational', 'life', 'positive', 'friendship', 'success', 'happiness', 'love']
 
 def get_quotes(type, number_of_quotes=1):
-    url = "http://www.brainyquote.com/quotes/topics/topic_" + type + ".html"
+    try:
+        url = "http://www.brainyquote.com/quotes/topics/topic_" + type + ".html"
+    except:
+        return 'Oops, could not find any quote. Try some other general topic.'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
     quotes = []
@@ -73,7 +76,7 @@ def webook():
                     elif message_text.lower() == 'quote': 
                         send_message(sender_id, str(get_random_quote()))
                     elif mo != None :
-                        send_message(sender_id, str(get_quotes(mo.group(1))))
+                        send_message(sender_id, str(get_quotes(mo.group(1).lower()))
                     else :
                         send_message(sender_id, "type <quote> to get a random quote and <quote> <topic> to get a quote related to the topic :)")
 
