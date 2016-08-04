@@ -16,10 +16,10 @@ app = Flask(__name__)
 popular_choice = ['motivational', 'life', 'positive', 'friendship', 'success', 'happiness', 'love']
 
 def get_quotes(type, number_of_quotes=1):
-    try:
-        url = "http://www.brainyquote.com/quotes/topics/topic_" + type + ".html"
-    except:
-        return 'Oops, could not find any quote. Try some other general topic.'
+    #try:
+    url = "http://www.brainyquote.com/quotes/topics/topic_" + type + ".html"
+    #except:
+    #    return 'Oops, could not find any quote. Try some other general topic.'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
     quotes = []
