@@ -74,9 +74,9 @@ def webook():
                     if message_text.lower() == 'hi' or message_text.lower() == 'hey' or message_text.lower() == 'hello' or message_text.lower() == 'yo':
                         send_message(sender_id, "Hello there")
                     elif message_text.lower() == 'quote': 
-                        send_message(sender_id, str(get_random_quote()))
+                        send_message(sender_id, str(get_random_quote()[0]))
                     elif mo != None :
-                        send_message(sender_id, str(get_quotes(mo.group(1))))
+                        send_message(sender_id, str(get_quotes(mo.group(1))[0]))
 
 
                     else :
