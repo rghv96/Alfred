@@ -32,7 +32,7 @@ def get_quotes(type, number_of_quotes=1):
 
 def get_random_quote():
     result = get_quotes(popular_choice[random.randint(0, len(popular_choice) - 1)])
-    return result[0]
+    return result
 
 
 @app.route('/', methods=['GET'])
