@@ -8,6 +8,7 @@ from flask import Flask, request
 from bs4 import BeautifulSoup
 import requests
 import random
+import re
 
 app = Flask(__name__)
 
@@ -64,23 +65,17 @@ def webook():
                     message_text = messaging_event["message"]["text"]  # the message's text
 
                     
+                    nameRegex = re.compile(r'quote (.*)')
+                    mo = nameRegex.search(message_text)
 
                     if message_text.lower() == 'hi' or message_text.lower() == 'hey' or message_text.lower() == 'hello' or message_text.lower() == 'yo':
                         send_message(sender_id, "Hello there")
                     elif message_text.lower() == 'quote': 
-                        #url = "http://www.brainyquote.com/quotes/topics/topic_" + popular_choice[random.randint(0, len(popular_choice) - 1)] + ".html"
-                        #response = requests.get(url)
-                        #soup = BeautifulSoup(response.text, "html.parser")
-                        #quotes = []
-                        #for quote in soup.find_all('a', {'title': 'view quote'}):
-                        #    quotes.append(quote.contents[0])
-                        #random.shuffle(quotes)
-                        #result = quotes[:1]   
-                        #send_message(sender_id, str(result))
                         send_message(sender_id, str(get_random_quote()))
-
+                    elif mo != None :
+                        send_message(sender_id, str(get_quotes(mo.group(1))))
                     else :
-                        send_message(sender_id, "type <quote> to get a random quote :D")
+                        send_message(sender_id, "type <quote> to get a random quote and <quote> <topic> to get a quote related to the topic :)")
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
