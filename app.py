@@ -27,12 +27,12 @@ def get_quotes(type, number_of_quotes=1):
         return 'Oops, could not find any quote. Try some other general topic. :)'
     random.shuffle(quotes)
     result = quotes[:number_of_quotes]
-    return result
+    return result[0]
 
 
 def get_random_quote():
     result = get_quotes(popular_choice[random.randint(0, len(popular_choice) - 1)])
-    return result
+    return result[0]
 
 
 @app.route('/', methods=['GET'])
@@ -74,9 +74,9 @@ def webook():
                     if message_text.lower() == 'hi' or message_text.lower() == 'hey' or message_text.lower() == 'hello' or message_text.lower() == 'yo':
                         send_message(sender_id, "Hello there")
                     elif message_text.lower() == 'quote': 
-                        send_message(sender_id, str(get_random_quote()[0]))
+                        send_message(sender_id, str(get_random_quote()))
                     elif mo != None :
-                        send_message(sender_id, str(get_quotes(mo.group(1))[0]))
+                        send_message(sender_id, str(get_quotes(mo.group(1))))
 
 
                     else :
