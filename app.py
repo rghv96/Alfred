@@ -76,7 +76,7 @@ def webook():
                     elif message_text.lower() == 'quote': 
                         send_message(sender_id, str(get_random_quote()))
                     elif mo != None :
-                        send_message(sender_id, str(get_quotes(mo.group(1).lower()))
+                        send_message(sender_id, str(get_quotes(mo.group(1))
                     else :
                         send_message(sender_id, "type <quote> to get a random quote and <quote> <topic> to get a quote related to the topic :)")
 
