@@ -72,11 +72,12 @@ def webook():
                     mo = nameRegex.search(message_text.lower())
 
                     if message_text.lower() == 'hi' or message_text.lower() == 'hey' or message_text.lower() == 'hello' or message_text.lower() == 'yo':
-                        type_message(sender_id)
+                        #type_message(sender_id)
                         send_message(sender_id, "Hello there :)")
                     elif message_text.lower() == 'quote': 
-                        send_message(sender_id, str(get_random_quote()))
                         type_message(sender_id)
+                        send_message(sender_id, str(get_random_quote()))
+                        
                     elif mo != None :
                         send_message(sender_id, str(get_quotes(mo.group(1))))
 
@@ -114,7 +115,7 @@ def send_message(recipient_id, message_text):
         "message": {
             "text": message_text
         },
-        "sender_action":"typing_off"
+        #"sender_action":"typing_off"
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
