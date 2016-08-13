@@ -69,13 +69,13 @@ def webook():
                     if "message" in messaging_event and "text" in messaging_event["message"]:
                         message_text = messaging_event["message"]["text"]  # the message's text
 
-                    #if len(message_text)>0:
-                    #    nameRegex = re.compile(r'quote (.*)')
-                    #    mo = nameRegex.search(message_text.lower())
+                    if len(message_text)>0:
+                        nameRegex = re.compile(r'quote (.*)')
+                        mo = nameRegex.search(message_text.lower())
 
-                    #    if message_text.lower() == 'hi' or message_text.lower() == 'hey' or message_text.lower() == 'hello' or message_text.lower() == 'yo':
-                    #        type_message(sender_id)
-                    #        send_message(sender_id, "Hello there :)")
+                        if message_text.lower() == 'hi' or message_text.lower() == 'hey' or message_text.lower() == 'hello' or message_text.lower() == 'yo':
+                            type_message(sender_id)
+                            send_message(sender_id, "Hello there :)")
                     #    elif message_text.lower() == 'quote': 
                     #        type_message(sender_id)
                     #        send_message(sender_id, str(get_random_quote()))
