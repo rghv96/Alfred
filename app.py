@@ -72,6 +72,7 @@ def webook():
                     mo = nameRegex.search(message_text.lower())
 
                     if message_text.lower() == 'hi' or message_text.lower() == 'hey' or message_text.lower() == 'hello' or message_text.lower() == 'yo':
+                        type_message(senderid)
                         send_message(sender_id, "Hello there :)")
                     elif message_text.lower() == 'quote': 
                         send_message(sender_id, str(get_random_quote()))
@@ -109,9 +110,31 @@ def send_message(recipient_id, message_text):
         "recipient": {
             "id": recipient_id
         },
-        #"message": {
-        #    "text": message_text
-        #},
+        "message": {
+            "text": message_text
+        },
+        "sender_action":"typing_on"
+    })
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+    if r.status_code != 200:
+        log(r.status_code)
+        log(r.text)
+
+
+def type_message(recipient_id):
+
+    log("typing bubbles message to {recipient}".format(recipient=recipient_id)
+
+    params = {
+        "access_token": 'EAAHOZCGZBWZCIYBAJKolxlhBnkO7KzUtjZA1iveVtJZAsFjIIgZAMPo0WSag7ALFoxwXqLjmjxVPaUrTs7aNHW9z7h7BmDZAZCZAOy5EZBQ6IYvISn6OXds9EWr45WBSOFsCwzOUNOZCVCMEUn57ZAhPDXJFKlGp2i3AktYUvCy8vt6BZCAZDZD'
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
         "sender_action":"typing_on"
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
