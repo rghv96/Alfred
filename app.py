@@ -66,7 +66,7 @@ def webook():
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = ""
-                    if "message" in messaging_event and "text" in messaging_event"message":
+                    if "message" in messaging_event and "text" in messaging_event["message"]:
                         message_text = messaging_event["message"]["text"]  # the message's text
 
                     #if len(message_text)>0:
