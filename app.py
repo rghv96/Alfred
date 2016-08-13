@@ -123,7 +123,7 @@ def send_message(recipient_id, message_text):
 
 def type_message(recipient_id):
 
-    log("typing bubbles message to {recipient}".format(recipient=recipient_id)
+    log("typing bubbles message to {recipient}".format(recipient=recipient_id))
 
     params = {
         "access_token": 'EAAHOZCGZBWZCIYBAJKolxlhBnkO7KzUtjZA1iveVtJZAsFjIIgZAMPo0WSag7ALFoxwXqLjmjxVPaUrTs7aNHW9z7h7BmDZAZCZAOy5EZBQ6IYvISn6OXds9EWr45WBSOFsCwzOUNOZCVCMEUn57ZAhPDXJFKlGp2i3AktYUvCy8vt6BZCAZDZD'
