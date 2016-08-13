@@ -72,7 +72,7 @@ def webook():
                     mo = nameRegex.search(message_text.lower())
 
                     if message_text.lower() == 'hi' or message_text.lower() == 'hey' or message_text.lower() == 'hello' or message_text.lower() == 'yo':
-                        #type_message(sender_id)
+                        type_message(sender_id)
                         send_message(sender_id, "Hello there :)")
                     elif message_text.lower() == 'quote': 
                         type_message(sender_id)
@@ -80,9 +80,8 @@ def webook():
                         
                     elif mo != None :
                         send_message(sender_id, str(get_quotes(mo.group(1))))
-
-
                     else :
+                        type_message(sender_id)
                         send_message(sender_id, "type <quote> to get a random quote and <quote> <topic> to get a quote related to the topic :)")
 
                 if messaging_event.get("delivery"):  # delivery confirmation
