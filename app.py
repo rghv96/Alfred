@@ -7,6 +7,8 @@ from flask import Flask, request
 
 from bs4 import BeautifulSoup
 import requests
+import apiai
+import pickle
 import random
 import re
 
