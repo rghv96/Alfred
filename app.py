@@ -105,7 +105,9 @@ def webook():
                         message_text = messaging_event["message"]["text"]  # the message's text
 
                     links = findmeme()
-
+                    nameRegex = re.compile(r'quote (.*)')
+                    mo = nameRegex.search(message_text.lower())
+                    
                     if message_text.lower()=="i'm done":
                         type_message(sender_id)
                         send_message(sender_id, "Goodbye. If you require more of my assistance, don't hesitate and wake me up. It would be my honour to help you.")
@@ -122,6 +124,9 @@ def webook():
                         sendmeme(sender_id, links)
                         quickreply(sender_id)
 
+                    elif mo != None :
+                        send_message(sender_id, str(get_quotes(mo.group(1))))
+                        
                     else:
                         type_message(sender_id)
                         send_message(sender_id, apiai_call(message_text))
