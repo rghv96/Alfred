@@ -115,7 +115,7 @@ def webook():
                     elif message_text.lower()=="quote" or message_text.lower()=="quote!":
                         type_message(sender_id)
                         send_message(sender_id, str(get_random_quote()))
-                        send_message(sender_id, "Type <quote> <topic> to get a quote related to that topic or press any button.")
+                        send_message(sender_id, "You can also type <quote> <topic> to get a quote related to that topic or press any button.")
                         quickreply(sender_id)
 
                     elif message_text.lower()=="meme" or message_text.lower()=="send me a meme" or message_text.lower()=="show me a meme":
@@ -126,6 +126,7 @@ def webook():
 
                     elif mo != None :
                         send_message(sender_id, str(get_quotes(mo.group(1))))
+                        quickreply(sender_id)
                         
                     else:
                         type_message(sender_id)
