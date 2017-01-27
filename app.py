@@ -34,6 +34,36 @@ def get_random_quote():
     result = get_quotes(popular_choice[random.randint(0, len(popular_choice) - 1)])
     return result
 
+def chunkstring(string, length):
+    return (string[0+i:length+i] for i in range(0, len(string), length))
+
+def apiai_call(message):
+    ai = apiai.ApiAI(os.environ["APIAI_CLIENT_ACCESS_TOKEN"])
+    request = ai.text_request()
+    request.query = message 
+    response = request.getresponse()
+    response_json = json.loads(response.read().decode('utf-8'))
+    return response_json['result']['fulfillment']['speech']
+
+def findmeme():
+    url = "http://www.memecenter.com/search/big%20bang%20theory"
+    links = []
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+    
+    for line in soup.find_all('img', class_ = "rrcont"):
+        links.append(line.get('src'))
+    
+    url = "http://www.wapppictures.com/30-hilarious-memes-big-bang-theory/"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+    for line in soup.find_all('img', class_ = re.compile("aligncenter+")):
+        links.append(line.get('src'))
+
+    random.shuffle(links)
+
+    return links
+
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -69,25 +99,31 @@ def webook():
                     if "message" in messaging_event and "text" in messaging_event["message"]: # checking if there is any text in the message
                         message_text = messaging_event["message"]["text"]  # the message's text
 
-                    if len(message_text)>0:
-                        nameRegex = re.compile(r'quote (.*)')
-                        mo = nameRegex.search(message_text.lower())
+                    links = findmeme()
 
-                        if message_text.lower() == 'hi' or message_text.lower() == 'hey' or message_text.lower() == 'hello' or message_text.lower() == 'yo':
-                            type_message(sender_id)
-                            send_message(sender_id, "Hello there :)")
-                        
-                        elif message_text.lower() == 'quote': 
-                            type_message(sender_id)
-                            send_message(sender_id, str(get_random_quote()))
-                        
-                        elif mo != None :
-                            send_message(sender_id, str(get_quotes(mo.group(1))))
-                        
-                        else :
-                            type_message(sender_id)
-                            send_message(sender_id, "type <quote> to get a random quote and <quote> <topic> to get a quote related to the topic :)")
+                    if message_text.lower()=="i'm done":
+                        type_message(sender_id)
+                        send_message(sender_id, "Goodbye. If you require more of my assistance, don't hesitate and wake me up. It would be my honour to help you.")
+            
+                    elif message_text.lower()=="quote" or message_text.lower()=="quote!":
+                        type_message(sender_id)
+                        send_message(sender_id, str(get_random_quote()))
+                        send_message(sender_id, "Type <quote> <topic> to get a quote related to that topic or press any button.")
+                        quickreply(sender_id)
 
+                    elif message_text.lower()=="meme" or message_text.lower()=="send me a meme" or message_text.lower()=="show me a meme":
+                        type_message(sender_id)
+                        random.shuffle(links)
+                        sendmeme(sender_id, links)
+                        quickreply(sender_id)
+
+                    else:
+                        type_message(sender_id)
+                        send_message(sender_id, apiai_call(message_text))
+                        quickreply(sender_id)
+
+
+                    
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
 
@@ -125,6 +161,32 @@ def send_message(recipient_id, message_text):
         log(r.status_code)
         log(r.text)
 
+def sendmeme(recipient_id, links):
+
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "attachment":{
+                "type":"image",
+                "payload":{
+                    "url": links[0]
+                }
+            }
+        }
+    })
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+    if r.status_code != 200:
+        log(r.status_code)
+        log(r.text)
+
 
 def type_message(recipient_id):
 
@@ -141,6 +203,44 @@ def type_message(recipient_id):
             "id": recipient_id
         },
         "sender_action":"typing_on"
+    })
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+    if r.status_code != 200:
+        log(r.status_code)
+        log(r.text)
+
+def quickreply(recipient_id):
+
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "text": u'🖖'.encode('utf-8'),   
+            "quick_replies":[
+              {
+                "content_type":"text",
+                "title":"Quote",
+                "payload":"NEW_JOKE"
+              },
+              {
+                "content_type":"text",
+                "title":"Meme",
+                "payload":"MEME"
+              },
+              {
+                "content_type":"text",
+                "title":"I'm done",
+                "payload":"DONE"
+              }
+            ]
+        }
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
