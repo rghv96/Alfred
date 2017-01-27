@@ -223,7 +223,8 @@ def quickreply(recipient_id):
         "recipient": {
             "id": recipient_id
         },
-        "message": {   
+        "message": {
+            "text": u'🖖'.encode('utf-8'),   
             "quick_replies":[
               {
                 "content_type":"text",
