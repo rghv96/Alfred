@@ -6,8 +6,6 @@ A messenger chatbot that replies with random quotes and memes of The Big Bang Th
 
 ## Run this bot for your page
 
-Follow this link : https://blog.hartleybrody.com/fb-messenger-bot/
-
 ### Environment Variables for heroku
 
 APIAI_CLIENT_ACCESS_TOKEN = client access token from api.ai <br>
