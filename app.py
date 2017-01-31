@@ -103,6 +103,8 @@ def webook():
                     message_text = ""
                     if "message" in messaging_event and "text" in messaging_event["message"]: # checking if there is any text in the message
                         message_text = messaging_event["message"]["text"]  # the message's text
+                    else:
+                        message_text = "Sticker!"
 
                     links = findmeme()
                     nameRegex = re.compile(r'quote (.*)')
